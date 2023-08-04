@@ -1,7 +1,12 @@
-const Home = () => {
-  return (
-    <p>Hello admin</p>
-  )
-}
+import { UserButton } from '@clerk/nextjs';
 
-export default Home;
+const SetupPage = () => {
+  return (
+    <>
+      <p>This is a protected route</p>
+      <UserButton afterSignOutUrl="/" />
+    </>
+  );
+};
+
+export default SetupPage;
