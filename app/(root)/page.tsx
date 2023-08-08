@@ -1,24 +1,20 @@
 'use client';
-import { useState } from 'react';
-import { UserButton } from '@clerk/nextjs';
-import Modal from '@/components/ui/modal';
+import { useEffect } from 'react';
+
+import useStoreModal from '@/hooks/use-store-modal';
 
 const SetupPage = () => {
-  const [isModalOpen, setIsModalOpen] = useState(true);
+  const { onOpen, isOpen } = useStoreModal();
 
-  const closeModal = () => setIsModalOpen(false);
+  useEffect(() => {
+    if(!isOpen) {
+      onOpen();
+    }
+  }, [isOpen, onOpen]);
 
   return (
     <>
       <p>This is a protected route</p>
-      <Modal 
-        tittle='Test title' 
-        description='Some desc' 
-        isOpen={isModalOpen}
-        onClose={closeModal}
-      >
-        Children
-      </Modal>
     </>
   );
 };
