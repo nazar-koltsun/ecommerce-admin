@@ -12,11 +12,7 @@ const SetupPage = () => {
     }
   }, [isOpen, onOpen]);
 
-  return (
-    <>
-      <p>This is a protected route</p>
-    </>
-  );
+  return null;
 };
 
 export default SetupPage;
