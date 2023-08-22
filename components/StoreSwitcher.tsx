@@ -10,7 +10,7 @@ import { store as Store } from '@prisma/client';
 import { useParams, useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { Check, ChevronsUpDownIcon, Store as StoreIcon } from 'lucide-react';
+import { Check, ChevronsUpDownIcon, PlusCircle, Store as StoreIcon } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import {
   Command,
@@ -36,7 +36,7 @@ const StoreSwitcher: React.FC<StoreSwitcherProps> = ({
 }) => {
   const [open, setOpen] = useState(false);
 
-  // const storeModal = useStoreModal();
+  const storeModal = useStoreModal();
   const params = useParams();
   const router = useRouter();
 
@@ -46,7 +46,7 @@ const StoreSwitcher: React.FC<StoreSwitcherProps> = ({
   }));
 
   const currentStore = formatedItems.find(
-    (item) => item.value === params.storeId
+    (item) => item.value === params.storeid
   );
 
   const onStoreSelect = (store: { value: string; label: string }) => {
@@ -66,7 +66,7 @@ const StoreSwitcher: React.FC<StoreSwitcherProps> = ({
           className={cn('w-[200px] justify-between', className)}
         >
           <StoreIcon className="mr-2 h-4 w-4" />
-          Current store
+          {currentStore?.label || 'Select a store'}
           <ChevronsUpDownIcon className="ml-auto h-4 w-4 shrink-0 opacity-50" />
         </Button>
       </PopoverTrigger>
@@ -97,6 +97,19 @@ const StoreSwitcher: React.FC<StoreSwitcherProps> = ({
             </CommandGroup>
           </CommandList>
           <CommandSeparator />
+          <CommandList>
+            <CommandGroup>
+              <CommandItem
+                onSelect={() => {
+                  setOpen(false);
+                  storeModal.onOpen();
+                }}
+              >
+                <PlusCircle className="mr-2 h-5 w-5" />
+                Create Store
+              </CommandItem>
+            </CommandGroup>
+          </CommandList>
         </Command>
       </PopoverContent>
     </Popover>
