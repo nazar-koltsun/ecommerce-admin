@@ -1,5 +1,6 @@
 'use client';
 
+import ApiAlert from '@/components/ApiAlert';
 import AlertModal from '@/components/modals/AlertModal';
 import { Button } from '@/components/ui/button';
 import {
@@ -18,10 +19,11 @@ import { store as Store } from '@prisma/client';
 import axios from 'axios';
 import { Trash } from 'lucide-react';
 import { useParams, useRouter } from 'next/navigation';
-import { use, useState } from 'react';
-import { set, useForm } from 'react-hook-form';
+import { useState } from 'react';
+import { useForm } from 'react-hook-form';
 import { toast } from 'react-hot-toast';
 import * as zood from 'zod';
+import useOrigin from '@/hooks/use-origin';
 
 interface SettingsFormProps {
   initialData: Store;
@@ -38,6 +40,7 @@ const SettingsForm: React.FC<SettingsFormProps> = ({ initialData }) => {
   const [loading, setLoading] = useState(false);
   const params = useParams();
   const router = useRouter();
+  const origin = useOrigin();
 
   const form = useForm<SettingFormValues>({
     resolver: zodResolver(formSchema),
@@ -65,15 +68,14 @@ const SettingsForm: React.FC<SettingsFormProps> = ({ initialData }) => {
       router.refresh();
       router.push('/');
       toast.success('Store deleted.');
-    } 
-    catch (error) {
-      toast.error('Make sute that you are deleted all products and categories.');
-    }
-    finally {
+    } catch (error) {
+      toast.error(
+        'Make sute that you are deleted all products and categories.'
+      );
+    } finally {
       setLoading(false);
       setOpen(false);
     }
-
   };
 
   return (
@@ -128,6 +130,12 @@ const SettingsForm: React.FC<SettingsFormProps> = ({ initialData }) => {
           </Button>
         </form>
       </Form>
+      <Separator />
+      <ApiAlert
+        title="NEXT_API_PUBLIC_URL"
+        description={`${origin}/api/stores/${params.storeid}`}
+        variant="public"
+      />
     </>
   );
 };
