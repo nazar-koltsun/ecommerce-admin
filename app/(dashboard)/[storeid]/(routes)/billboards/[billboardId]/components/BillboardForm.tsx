@@ -23,6 +23,7 @@ import { useForm } from 'react-hook-form';
 import { toast } from 'react-hot-toast';
 import * as zood from 'zod';
 import useOrigin from '@/hooks/use-origin';
+import ImageUpload from '@/components/ImageUpload';
 
 const formSchema = zood.object({
   label: zood.string().min(1),
@@ -44,7 +45,9 @@ const BillBoardForm: React.FC<BillBoardFormProps> = ({ initialData }) => {
 
   const title = initialData ? 'Edit billboard' : 'Create billboard';
   const description = initialData ? 'Edit billboard' : 'Create a new billboard';
-  const toastMessage = initialData ? 'Billboard updated.' : 'Billboard created.';
+  const toastMessage = initialData
+    ? 'Billboard updated.'
+    : 'Billboard created.';
   const action = initialData ? 'Save changes' : 'Create';
 
   const form = useForm<BillBoardFormValues>({
@@ -58,9 +61,15 @@ const BillBoardForm: React.FC<BillBoardFormProps> = ({ initialData }) => {
   const onSubmit = async (values: BillBoardFormValues) => {
     try {
       setLoading(true);
-      await axios.patch(`/api/stores/${params.storeid}`, values);
+
+      if(initialData) {
+        await axios.patch(`/api/${params.storeId}/billboards/${params.billboardId}`, values);
+      } else {
+        await axios.post(`/api/${params.storeId}/billboards`, values);
+      }
+
       router.refresh();
-      toast.success('Store settings updated.');
+      toast.success(toastMessage);
     } catch (error) {
       toast.error('Something went wrong.');
     } finally {
@@ -72,13 +81,13 @@ const BillBoardForm: React.FC<BillBoardFormProps> = ({ initialData }) => {
     try {
       setOpen(true);
       setLoading(true);
-      await axios.delete(`/api/stores/${params.storeid}`);
+      await axios.delete(`/api/${params.storeId}/billboards/${params.billboardId}`);
       router.refresh();
       router.push('/');
-      toast.success('Store deleted.');
+      toast.success('Billboard deleted.');
     } catch (error) {
       toast.error(
-        'Make sute that you are deleted all products and categories.'
+        'Make sute that you are deleted all categories using the billboard first.'
       );
     } finally {
       setLoading(false);
@@ -95,11 +104,8 @@ const BillBoardForm: React.FC<BillBoardFormProps> = ({ initialData }) => {
         loading={loading}
       />
       <div className="flex items-center justify-between">
-        <Heading
-          title={title}
-          description={description}
-        ></Heading>
-        {initialData && 
+        <Heading title={title} description={description}></Heading>
+        {initialData && (
           <Button
             variant="destructive"
             size="icon"
@@ -108,7 +114,7 @@ const BillBoardForm: React.FC<BillBoardFormProps> = ({ initialData }) => {
           >
             <Trash className="w-4 h-4" />
           </Button>
-        }
+        )}
       </div>
       <Separator />
       <Form {...form}>
@@ -116,6 +122,24 @@ const BillBoardForm: React.FC<BillBoardFormProps> = ({ initialData }) => {
           onSubmit={form.handleSubmit(onSubmit)}
           className="space-y-8 w-full"
         >
+          <FormField
+            control={form.control}
+            name="imageUrl"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Background image</FormLabel>
+                <FormControl>
+                  <ImageUpload
+                    value={field.value ? [field.value] : []}
+                    disabled={loading}
+                    onChange={(url) => field.onChange(url)}
+                    onRemove={() => field.onChange('')}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
           <div className="grid grid-cols-3 gap-8">
             <FormField
               control={form.control}
