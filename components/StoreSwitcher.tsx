@@ -6,7 +6,7 @@ import {
   PopoverTrigger,
 } from '@/components/ui/popover';
 import useStoreModal from '@/hooks/use-store-modal';
-import { store as Store } from '@prisma/client';
+import { Store } from '@prisma/client';
 import { useParams, useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
@@ -46,7 +46,7 @@ const StoreSwitcher: React.FC<StoreSwitcherProps> = ({
   }));
 
   const currentStore = formatedItems.find(
-    (item) => item.value === params.storeid
+    (item) => item.value === params.storeId
   );
 
   const onStoreSelect = (store: { value: string; label: string }) => {
