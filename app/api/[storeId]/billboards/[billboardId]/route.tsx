@@ -28,7 +28,7 @@ export async function PATCH(
     }
 
     if (!billboardId) {
-      return new NextResponse('Store ID is required', { status: 400 });
+      return new NextResponse('BillboardId ID is required', { status: 400 });
     }
 
     const resp = await prismadb.billboard.update({
@@ -41,6 +41,37 @@ export async function PATCH(
       data: {
         label,
         imageUrl,
+      },
+    });
+
+    return NextResponse.json(resp);
+  } catch (err) {
+    return new NextResponse('Internal Server Error', { status: 500 });
+  }
+}
+
+export async function DELETE(
+  _req: Request,
+  { params }: { params: { billboardId: string } }
+) {
+  try {
+    const { userId } = auth();
+    const { billboardId } = params;
+
+    if (!userId) {
+      return new NextResponse('Unauthorized', { status: 401 });
+    }
+
+    if (!billboardId) {
+      return new NextResponse('BillboardId ID is required', { status: 400 });
+    }
+
+    const resp = await prismadb.billboard.delete({
+      where: {
+        id: billboardId,
+        store: {
+          userId,
+        },
       },
     });
 
