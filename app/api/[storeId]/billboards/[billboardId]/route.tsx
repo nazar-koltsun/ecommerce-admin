@@ -5,11 +5,11 @@ import { NextResponse } from 'next/server';
 
 export async function PATCH(
   req: Request,
-  { params }: { params: {storeId: string, billboardId: string } }
+  { params }: { params: { storeId: string; billboardId: string } }
 ) {
   try {
     const { userId } = auth();
-    const {storeId, billboardId } = params;
+    const { storeId, billboardId } = params;
 
     const body = await req.json();
 
@@ -38,7 +38,7 @@ export async function PATCH(
       },
     });
 
-    if(!storeByUserId) {
+    if (!storeByUserId) {
       return new NextResponse('Unauthorised', { status: 403 });
     }
 
@@ -60,11 +60,11 @@ export async function PATCH(
 
 export async function DELETE(
   _req: Request,
-  { params }: { params: { billboardId: string } }
+  { params }: { params: { storeId: string; billboardId: string } }
 ) {
   try {
     const { userId } = auth();
-    const { billboardId } = params;
+    const { storeId, billboardId } = params;
 
     if (!userId) {
       return new NextResponse('Unauthorized', { status: 401 });
@@ -74,18 +74,25 @@ export async function DELETE(
       return new NextResponse('BillboardId ID is required', { status: 400 });
     }
 
-    const resp = await prismadb.billboard.delete({
+    const storeByUserId = await prismadb.store.findFirst({
       where: {
-        id: billboardId,
-        store: {
-          userId,
-        },
+        id: storeId,
+        userId,
       },
     });
 
-    return NextResponse.json(resp);
+    if (!storeByUserId) {
+      return new NextResponse('Unauthorised', { status: 403 });
+    }
+
+    const billboard = await prismadb.billboard.deleteMany({
+      where: {
+        id: billboardId,
+      },
+    });
+
+    return NextResponse.json(billboard);
   } catch (err) {
     return new NextResponse('Internal Server Error', { status: 500 });
   }
 }
-
