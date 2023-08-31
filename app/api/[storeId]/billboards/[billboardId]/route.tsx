@@ -5,11 +5,11 @@ import { NextResponse } from 'next/server';
 
 export async function PATCH(
   req: Request,
-  { params }: { params: { billboardId: string } }
+  { params }: { params: {storeId: string, billboardId: string } }
 ) {
   try {
     const { userId } = auth();
-    const { billboardId } = params;
+    const {storeId, billboardId } = params;
 
     const body = await req.json();
 
@@ -28,15 +28,23 @@ export async function PATCH(
     }
 
     if (!billboardId) {
-      return new NextResponse('BillboardId ID is required', { status: 400 });
+      return new NextResponse('Billboard ID is required', { status: 400 });
     }
 
-    const resp = await prismadb.billboard.update({
+    const storeByUserId = await prismadb.store.findFirst({
+      where: {
+        id: storeId,
+        userId,
+      },
+    });
+
+    if(!storeByUserId) {
+      return new NextResponse('Unauthorised', { status: 403 });
+    }
+
+    const billboard = await prismadb.billboard.updateMany({
       where: {
         id: billboardId,
-        store: {
-          userId,
-        },
       },
       data: {
         label,
@@ -44,7 +52,7 @@ export async function PATCH(
       },
     });
 
-    return NextResponse.json(resp);
+    return NextResponse.json(billboard);
   } catch (err) {
     return new NextResponse('Internal Server Error', { status: 500 });
   }
