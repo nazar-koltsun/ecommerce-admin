@@ -22,7 +22,6 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-hot-toast';
 import * as zood from 'zod';
-import useOrigin from '@/hooks/use-origin';
 import ImageUpload from '@/components/ImageUpload';
 
 const formSchema = zood.object({
@@ -41,7 +40,6 @@ const BillBoardForm: React.FC<BillBoardFormProps> = ({ initialData }) => {
   const [loading, setLoading] = useState(false);
   const params = useParams();
   const router = useRouter();
-  const origin = useOrigin();
 
   const title = initialData ? 'Edit billboard' : 'Create billboard';
   const description = initialData ? 'Edit billboard' : 'Create a new billboard';
