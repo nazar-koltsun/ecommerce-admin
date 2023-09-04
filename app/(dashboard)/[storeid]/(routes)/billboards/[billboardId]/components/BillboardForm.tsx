@@ -70,6 +70,7 @@ const BillBoardForm: React.FC<BillBoardFormProps> = ({ initialData }) => {
 
       router.refresh();
       toast.success(toastMessage);
+      router.push(`/${params.storeId}/billboards`);
     } catch (error) {
       toast.error('Something went wrong.');
     } finally {
