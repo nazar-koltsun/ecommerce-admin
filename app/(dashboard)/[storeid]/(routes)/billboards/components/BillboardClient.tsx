@@ -6,14 +6,11 @@ import { Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Heading from "@/components/ui/heading";
 import { Separator } from "@/components/ui/separator";
-import Image from "next/image";
+import { BillboardColumn, columns } from "./Columns";
+import { DataTable } from "@/components/ui/data-table";
 
 interface BillboardClientProps {
-  billboards?: {
-    id: string;
-    label: string;
-    imageUrl: string;
-  }[]
+  billboards: BillboardColumn[]
 }
 
 const BillboardClient: React.FC<BillboardClientProps> = ({billboards}) => {
@@ -24,7 +21,7 @@ const BillboardClient: React.FC<BillboardClientProps> = ({billboards}) => {
     <>
       <div className="flex items-center justify-between">
         <Heading 
-          title="Billboards(0)"
+          title={`Billboards(${billboards?.length})`}
           description="Manage your billboards here." 
         />
         <Button onClick={() => router.push(`/${params.storeId}/billboards/new`)}>
@@ -33,17 +30,11 @@ const BillboardClient: React.FC<BillboardClientProps> = ({billboards}) => {
         </Button>
       </div>
       <Separator />
-      <ul>
-        {billboards?.map(billboard => (
-          <li key={billboard.id}>
-            {billboard.label}
-            <Image width={200} height={200} src={billboard.imageUrl} alt='Billboard image' />
-            <Button onClick={() => router.push(`/${params.storeId}/billboards/${billboard.id}`)}>
-              Edit
-            </Button>
-          </li>
-        ))}
-      </ul>
+      <DataTable 
+        columns={columns}
+        data={billboards}
+        seachKey="label"
+      />
     </>
   )
 }
