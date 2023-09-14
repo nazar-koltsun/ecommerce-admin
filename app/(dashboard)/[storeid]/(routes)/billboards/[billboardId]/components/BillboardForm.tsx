@@ -82,7 +82,7 @@ const BillBoardForm: React.FC<BillBoardFormProps> = ({ initialData }) => {
       setLoading(true);
       await axios.delete(`/api/${params.storeId}/billboards/${params.billboardId}`);
       router.refresh();
-      router.push('/');
+      router.push(`/${params.storeId}/billboards`);
       toast.success('Billboard deleted.');
     } catch (error) {
       toast.error(
@@ -163,7 +163,6 @@ const BillBoardForm: React.FC<BillBoardFormProps> = ({ initialData }) => {
           </Button>
         </form>
       </Form>
-      <Separator />
     </>
   );
 };
