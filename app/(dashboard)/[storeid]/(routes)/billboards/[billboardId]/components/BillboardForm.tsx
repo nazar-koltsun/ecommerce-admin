@@ -76,7 +76,7 @@ const BillBoardForm: React.FC<BillBoardFormProps> = ({ initialData }) => {
     }
   };
 
-  const deleteStore = async () => {
+  const onDeleteBillboard = async () => {
     try {
       setOpen(true);
       setLoading(true);
@@ -99,7 +99,7 @@ const BillBoardForm: React.FC<BillBoardFormProps> = ({ initialData }) => {
       <AlertModal
         isOpen={open}
         onClose={() => setOpen(false)}
-        onConfirm={deleteStore}
+        onConfirm={onDeleteBillboard}
         loading={loading}
       />
       <div className="flex items-center justify-between">
