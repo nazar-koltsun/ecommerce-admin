@@ -15,7 +15,7 @@ import Heading from '@/components/ui/heading';
 import { Input } from '@/components/ui/input';
 import { Separator } from '@/components/ui/separator';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { store as Store } from '@prisma/client';
+import { Store } from '@prisma/client';
 import axios from 'axios';
 import { Trash } from 'lucide-react';
 import { useParams, useRouter } from 'next/navigation';
@@ -133,7 +133,7 @@ const SettingsForm: React.FC<SettingsFormProps> = ({ initialData }) => {
       <Separator />
       <ApiAlert
         title="NEXT_API_PUBLIC_URL"
-        description={`${origin}/api/stores/${params.storeid}`}
+        description={`${origin}/api/stores/${params.storeId}`}
         variant="public"
       />
     </>
