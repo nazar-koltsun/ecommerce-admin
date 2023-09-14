@@ -25,7 +25,7 @@ const variantMap: Record<ApiAlertProps['variant'], BadgeProps['variant']> = {
 const ApiAlert: React.FC<ApiAlertProps> = ({
   title,
   description,
-  variant='public',
+  variant,
 }) => {
   const onCopy = () => {
     navigator.clipboard.writeText(description);
