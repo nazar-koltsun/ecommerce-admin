@@ -30,11 +30,11 @@ const SellAction: React.FC<SellActionProps> = ({ data }) => {
 
   const onCopy = () => {
     navigator.clipboard.writeText(data.id);
-    toast.success('Billboard route copied to clipboard');
+    toast.success('Category route copied to clipboard');
   };
 
   const onEdit = () => {
-    router.push(`/${params.storeId}/billboards/${data.id}`);
+    router.push(`/${params.storeId}/categories/${data.id}`);
   };
 
   const onDeleteBillboard = async () => {
@@ -42,13 +42,13 @@ const SellAction: React.FC<SellActionProps> = ({ data }) => {
       setOpen(true);
       setLoading(true);
       await axios.delete(
-        `/api/${params.storeId}/billboards/${data.id}`
+        `/api/${params.storeId}/categories/${data.id}`
       );
       router.refresh();
-      toast.success('Billboard deleted.');
+      toast.success('Category deleted.');
     } catch (error) {
       toast.error(
-        'Make sute that you are deleted all categories using the billboard first.'
+        'Make sure you deleted all products using this category first.'
       );
     } finally {
       setLoading(false);
