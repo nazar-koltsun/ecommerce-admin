@@ -18,6 +18,11 @@ export const columns: ColumnDef<ColorColumn>[] = [
   {
     accessorKey: 'value',
     header: 'Value',
+    cell: ({row}) => {
+      const data = row.original;
+
+      return <div className='w-6 h-6 rounded-full' style={{backgroundColor: data.value}} />;
+    }
   },
   {
     accessorKey: 'createdAt',
