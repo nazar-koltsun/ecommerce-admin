@@ -6,6 +6,7 @@ import { ImagePlus, Plus, Trash } from 'lucide-react';
 import { CldUploadWidget } from 'next-cloudinary';
 
 import { Button } from '@/components/ui/button';
+import { Image as ImageType } from '@prisma/client';
 
 interface ImageUploadProps {
   disabled?: boolean;
