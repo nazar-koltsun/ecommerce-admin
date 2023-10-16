@@ -65,7 +65,6 @@ const CategoryForm: React.FC<CategoryFormProps> = ({
   });
 
   const onSubmit = async (values: CategoryFormValues) => {
-    console.log('values', values);
     try {
       setLoading(true);
 

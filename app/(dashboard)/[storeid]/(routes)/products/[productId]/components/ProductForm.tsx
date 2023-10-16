@@ -36,8 +36,8 @@ import Link from 'next/link';
 
 const formSchema = zood.object({
   name: zood.string().min(1),
-  images: zood.object({ url: zood.string().url() }).array(),
-  price: zood.coerce.number().min(1),
+  images: zood.object({ url: zood.string().url() }).array().min(1),
+  price: zood.coerce.number(),
   categoryId: zood.string().min(1),
   colorId: zood.string().min(1),
   sizeId: zood.string().min(1),
@@ -96,7 +96,6 @@ const ProductForm: React.FC<ProductFormProps> = ({
   const onSubmit = async (values: ProductFormValues) => {
     try {
       setLoading(true);
-
       if (initialData) {
         await axios.patch(
           `/api/${params.storeId}/products/${params.productId}`,
