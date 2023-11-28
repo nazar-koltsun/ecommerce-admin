@@ -101,8 +101,9 @@ export async function GET(
     const categoryId = searchParams.get('categoryId') || undefined;
     const colorId = searchParams.get('colorId') || undefined;
     const sizeId = searchParams.get('sizeId') || undefined;
-    const isFeatured = searchParams.get('isFeatured');
-    const isArchived = searchParams.get('isArchived');
+    const isFeatured = searchParams.get('isFeatured') === 'true' ? true : false;
+
+    console.log('categoryId', categoryId);
 
     if (!storeId) {
       return new NextResponse('Store ID is required', { status: 400 });
@@ -114,7 +115,7 @@ export async function GET(
         categoryId,
         colorId,
         sizeId,
-        isFeatured: isFeatured ? true : false,
+        isFeatured,
         isArchived: false,
       },
       include: {
@@ -127,6 +128,8 @@ export async function GET(
         createdAt: 'desc',
       },
     });
+
+    console.log('products', products);
 
     return NextResponse.json(products);
   } catch (err) {
