@@ -4,6 +4,8 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
 import { formater } from '@/lib/utils';
 import getTotalRevenue from '@/actions/get-total-revenue';
+import getTotalSales from '@/actions/get-total-sales';
+
 import { CreditCard, DollarSign, Package } from 'lucide-react';
 
 interface DashboardPageProps {
@@ -15,6 +17,7 @@ interface DashboardPageProps {
 const DashboardPage: React.FC<DashboardPageProps> = async ({ params }) => {
   const { storeid } = params;
   const totalRevenue = await getTotalRevenue(storeid);
+  const totalSales = await getTotalSales(storeid);
 
   return (
     <div className="p-8 pt-6">
@@ -41,7 +44,7 @@ const DashboardPage: React.FC<DashboardPageProps> = async ({ params }) => {
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <p className="font-bold">+25</p>
+            <p className="font-bold">+{totalSales}</p>
           </CardContent>
         </Card>
 
