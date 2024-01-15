@@ -5,6 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { formater } from '@/lib/utils';
 import getTotalRevenue from '@/actions/get-total-revenue';
 import getSalesCount from '@/actions/get-sales-count';
+import getProductsCount from '@/actions/get-products-count';
 
 import { CreditCard, DollarSign, Package } from 'lucide-react';
 
@@ -18,6 +19,7 @@ const DashboardPage: React.FC<DashboardPageProps> = async ({ params }) => {
   const { storeid } = params;
   const totalRevenue = await getTotalRevenue(storeid);
   const totalSalesCount = await getSalesCount(storeid);
+  const totalProductsCount = await getProductsCount(storeid)
 
   return (
     <div className="p-8 pt-6">
@@ -56,7 +58,7 @@ const DashboardPage: React.FC<DashboardPageProps> = async ({ params }) => {
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <p className="font-bold">12</p>
+            <p className="font-bold">{totalProductsCount}</p>
           </CardContent>
         </Card>
       </div>
