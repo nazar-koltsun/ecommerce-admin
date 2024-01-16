@@ -6,6 +6,7 @@ import { formater } from '@/lib/utils';
 import getTotalRevenue from '@/actions/get-total-revenue';
 import getSalesCount from '@/actions/get-sales-count';
 import getProductsCount from '@/actions/get-products-count';
+import getGraphRevenue from '@/actions/get-graph-revenue';
 
 import { CreditCard, DollarSign, Package } from 'lucide-react';
 
@@ -19,7 +20,10 @@ const DashboardPage: React.FC<DashboardPageProps> = async ({ params }) => {
   const { storeid } = params;
   const totalRevenue = await getTotalRevenue(storeid);
   const totalSalesCount = await getSalesCount(storeid);
-  const totalProductsCount = await getProductsCount(storeid)
+  const totalProductsCount = await getProductsCount(storeid);
+  const graphRevenue = await getGraphRevenue(storeid);
+
+  console.log('graphRevenue', graphRevenue);
 
   return (
     <div className="p-8 pt-6">
