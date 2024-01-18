@@ -1,6 +1,7 @@
 import Heading from '@/components/ui/heading';
 import { Separator } from '@/components/ui/separator';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import Overview from '@/components/Overview';
 
 import { formater } from '@/lib/utils';
 import getTotalRevenue from '@/actions/get-total-revenue';
@@ -22,8 +23,6 @@ const DashboardPage: React.FC<DashboardPageProps> = async ({ params }) => {
   const totalSalesCount = await getSalesCount(storeid);
   const totalProductsCount = await getProductsCount(storeid);
   const graphRevenue = await getGraphRevenue(storeid);
-
-  console.log('graphRevenue', graphRevenue);
 
   return (
     <div className="p-8 pt-6">
@@ -65,7 +64,18 @@ const DashboardPage: React.FC<DashboardPageProps> = async ({ params }) => {
             <p className="font-bold">{totalProductsCount}</p>
           </CardContent>
         </Card>
+
       </div>
+      <Card className='mt-4'>
+        <CardHeader>
+          <CardTitle>
+            Overview
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <Overview data={graphRevenue} />
+        </CardContent>
+      </Card>
     </div>
   );
 };
